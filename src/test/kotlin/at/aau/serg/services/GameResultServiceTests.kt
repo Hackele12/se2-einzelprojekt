@@ -71,5 +71,22 @@ class GameResultServiceTests {
         assertEquals(gameResult2, res[1])
         assertEquals(2, res[1].id)
     }
+    @Test
+    fun test_deleteGameResult_removesCorrectItem() {
+        val gameResult1 = GameResult(0, "player1", 17, 15.3)
+        val gameResult2 = GameResult(0, "player2", 25, 16.0)
 
+        service.addGameResult(gameResult1)
+        service.addGameResult(gameResult2)
+
+        // Wir löschen player1 (dieser hat automatisch ID 1 bekommen)
+        service.deleteGameResult(1)
+
+        val res = service.getGameResults()
+
+        // Es darf nur noch 1 Element übrig sein, nämlich player2 (ID 2)
+        assertEquals(1, res.size)
+        assertEquals("player2", res[0].playerName)
+        assertEquals(2L, res[0].id)
+    }
 }
